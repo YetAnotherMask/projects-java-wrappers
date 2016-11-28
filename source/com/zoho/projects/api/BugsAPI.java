@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.zoho.projects.model.Bug;
+import com.zoho.projects.model.BugComment;
 import com.zoho.projects.model.Customfield;
 import com.zoho.projects.model.Defaultfield;
 import com.zoho.projects.parser.BugParser;
@@ -194,6 +195,84 @@ public class BugsAPI extends API
 		String response = ZohoHTTPClient.get(url, getQueryMap());
 		
 		return bugParser.getCustomfields(response);
+	}
+
+	/**
+	 * Get all the bug comments.
+	 * 
+	 * @param projectId ID of the project.
+	 * 
+	 * @param bugId ID of the bug.
+	 * 
+	 * @param queryMap This queryMap contains the filters in the form of key-value pair.
+	 * 
+	 * @return Returns List of Comment object.
+	 * 
+	 * @throws Exception
+	 */
+	
+	public List<BugComment> getComments(String projectId, String bugId, HashMap<String, Object> queryMap)throws Exception
+	{
+		
+		String url = getBaseURL()+"/projects/"+projectId+"/bugs/"+bugId+"/comments/";	//No I18N
+		
+		String response = ZohoHTTPClient.get(url, getQueryMap(queryMap));
+		
+		return bugParser.getComments(response);
+		
+	}
+	
+	/**
+	 * Add the bug comment.
+	 * 
+	 * @param projectId ID of the project.
+	 * 
+	 * @param bugId ID of the bug.
+	 * 
+	 * @param content  Comment for the bug.
+	 * 
+	 * @return Returns the Comment object.
+	 *  
+	 * @throws Exception
+	 */
+	
+	public BugComment addComment(String projectId, String bugId, String content)throws Exception
+	{
+		
+		String url = getBaseURL()+"/projects/"+projectId+"/bugs/"+bugId+"/comments/";	//No I18N
+		
+		HashMap<String, Object> requestBody = new HashMap<String, Object>();
+		requestBody.put("content", content);
+		
+		String response = ZohoHTTPClient.post(url, getQueryMap(requestBody));
+		
+		return bugParser.getComment(response);
+		
+	}
+	
+	/**
+	 * Delete an existing bug comment.
+	 * 
+	 * @param projectId ID of the project.
+	 * 
+	 * @param bugId ID of the bug.
+	 * 
+	 * @param commentId ID of the comment.
+	 * 
+	 * @return Returns the String object.
+	 * 
+	 * @throws Exception
+	 */
+	
+	public String deleteComment(String projectId, String bugId, String commentId)throws Exception
+	{
+		
+		String url = getBaseURL()+"/projects/"+projectId+"/bugs/"+bugId+"/comments/"+commentId+"/";	//No I18N
+		
+		String response = ZohoHTTPClient.delete(url, getQueryMap());
+		
+		return bugParser.getResult(response);
+		
 	}
 	
 }

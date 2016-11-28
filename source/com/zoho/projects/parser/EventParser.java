@@ -5,12 +5,12 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Event;
 import com.zoho.projects.model.Participant;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -37,13 +37,13 @@ public class EventParser
 	public List<Event> getEvents(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray events = jsonObject.getJSONArray("events");	//No I18N
 		
-		List<Event> eventList = new ArrayList<Event>(events.length());
+		List<Event> eventList = new ArrayList<Event>(events.size());
 		
-		for(int i = 0; i < events.length(); i++)
+		for(int i = 0; i < events.size(); i++)
 		{
 			JSONObject event = events.getJSONObject(i);
 			
@@ -67,7 +67,7 @@ public class EventParser
 	public Event getEvent(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray events = jsonObject.getJSONArray("events");	//No I18N
 		
@@ -141,9 +141,9 @@ public class EventParser
 		{
 			JSONArray participants = jsonObject.getJSONArray("participants");	//No I18N
 			
-			List<Participant> participantList = new ArrayList<Participant>(participants.length());
+			List<Participant> participantList = new ArrayList<Participant>(participants.size());
 			
-			for(int j = 0; j < participants.length(); j++)
+			for(int j = 0; j < participants.size(); j++)
 			{
 				JSONObject participant = participants.getJSONObject(j);
 				
@@ -199,7 +199,7 @@ public class EventParser
 	
 	public String getResult(String response)throws JSONException 
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		

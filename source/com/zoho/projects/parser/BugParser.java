@@ -7,13 +7,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.siliconmtn.util.Convert;
 import com.zoho.projects.model.Bug;
+import com.zoho.projects.model.BugComment;
 import com.zoho.projects.model.Customfield;
 import com.zoho.projects.model.Defaultfield;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -40,13 +42,13 @@ public class BugParser
 	public List<Bug> getBugs(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray bugs = jsonObject.getJSONArray("bugs"); 	//No I18N
 		
-		List<Bug> bugList = new ArrayList<Bug>(bugs.length());
+		List<Bug> bugList = new ArrayList<Bug>(bugs.size());
 		
-		for(int i = 0; i < bugs.length(); i++)
+		for(int i = 0; i < bugs.size(); i++)
 		{
 			JSONObject bug = bugs.getJSONObject(i);
 			
@@ -70,7 +72,7 @@ public class BugParser
 	public Bug getBug(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray bugs = jsonObject.getJSONArray("bugs");	//No I18N
 		
@@ -273,7 +275,7 @@ public class BugParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		
@@ -292,13 +294,13 @@ public class BugParser
 	
 	public List<Customfield> getCustomfields(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		List<Customfield> customfieldList = new ArrayList<Customfield>();
 		
 		JSONArray customfields = jsonObject.getJSONArray("customfields");	//No I18N
 		
-		for(int i = 0; i < customfields.length(); i++)
+		for(int i = 0; i < customfields.size(); i++)
 		{
 			customfieldList.add(this.jsonToCustomfield(customfields.getJSONObject(i)));
 		}
@@ -337,9 +339,9 @@ public class BugParser
 		{
 			JSONArray picklist = jsonObject.getJSONArray("picklist_values");	//No I18N
 			
-			String[] picklistValues = new String[picklist.length()];
+			String[] picklistValues = new String[picklist.size()];
 			
-			for (int i = 0; i < picklist.length(); i++)
+			for (int i = 0; i < picklist.size(); i++)
 			{
 				picklistValues[i] = picklist.getString(i);
 			}
@@ -366,7 +368,7 @@ public class BugParser
 		
 		Defaultfield defaultfield = new Defaultfield();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject defaultFields = jsonObject.getJSONObject("defaultfields"); 	//No I18N
 		
@@ -376,7 +378,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> severitydetails = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < severityDetails.length(); i++)
+			for(int i = 0; i < severityDetails.size(); i++)
 			{
 				JSONObject severitydetail = severityDetails.getJSONObject(i);
 				
@@ -392,7 +394,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> statusdeatils = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < statusDeatils.length(); i++)
+			for(int i = 0; i < statusDeatils.size(); i++)
 			{
 				JSONObject statusdeatil = statusDeatils.getJSONObject(i);
 				
@@ -408,7 +410,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> moduledetails = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < moduleDetails.length(); i++)
+			for(int i = 0; i < moduleDetails.size(); i++)
 			{
 				JSONObject moduledetail = moduleDetails.getJSONObject(i);
 				
@@ -424,7 +426,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> prioritydetails = new ArrayList<HashMap<String,Object>>();
 			
-			for (int i = 0; i < priorityDetails.length(); i++)
+			for (int i = 0; i < priorityDetails.size(); i++)
 			{
 				JSONObject prioritydetail = priorityDetails.getJSONObject(i);
 				
@@ -441,7 +443,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> classificationdetails = new ArrayList<HashMap<String,Object>>();
 			
-			for (int i = 0; i < classificationDetails.length(); i++)
+			for (int i = 0; i < classificationDetails.size(); i++)
 			{
 				JSONObject classificationdetail = classificationDetails.getJSONObject(i);
 				
@@ -483,4 +485,106 @@ public class BugParser
 		
 	}
 	
+	/**
+	 * Parse the JSON response and make it into List of Comment object.
+	 * 
+	 * @param response JSON response contains the details of list of comments.
+	 * 
+	 * @return Returns List of Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugComment> getComments(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugComment> commentList = new ArrayList<>();
+		
+		if(jsonObject.has("comments"))
+		{
+			JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
+			
+			for(int j = 0; j < comments.size(); j++)
+			{
+				JSONObject comment = comments.getJSONObject(j);
+				
+				commentList.add(this.jsonToComment(comment));
+			}
+			
+		}
+		
+		return commentList;
+		
+	}
+	
+	/**
+	 * Parse the JSON response and make it into the Comment object.
+	 * 
+	 * @param response JSON response contains the details of comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugComment getComment(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
+		
+		JSONObject comment = comments.getJSONObject(0);
+		
+		return this.jsonToComment(comment);
+		
+	}
+	
+	
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugComment jsonToComment(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugComment comment = new BugComment();
+		
+		if(jsonObject.has("comment_id"))
+		{
+			comment.setId(jsonObject.getString("comment_id"));	//No I18N
+		}
+		if(jsonObject.has("created_time_long"))
+		{
+			comment.setCreatedTimeLong(jsonObject.getLong("created_time_long"));
+		}
+		if(jsonObject.has("created_time"))
+		{
+			comment.setCreatedTime(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("created_time")));
+		}
+		if(jsonObject.has("added_by"))
+		{
+			comment.setAddedBy(jsonObject.getLong("added_by"));
+		}
+		if(jsonObject.has("comment"))
+		{
+			comment.setComment(jsonObject.getString("comment"));	//No I18N
+		}
+		if(jsonObject.has("added_person"))
+		{
+			comment.setAddedPerson(jsonObject.getString("added_person"));
+		}
+		
+		return comment;
+		
+	}
+
 }

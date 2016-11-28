@@ -5,11 +5,11 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Portal;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -38,11 +38,11 @@ public class PortalParser
 		
 		List<Portal> portalList = new ArrayList<Portal>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray portals = jsonObject.getJSONArray("portals");	//No I18N
 		
-		for(int i = 0; i < portals.length(); i++)
+		for(int i = 0; i < portals.size(); i++)
 		{
 			JSONObject portal = portals.getJSONObject(i);
 			

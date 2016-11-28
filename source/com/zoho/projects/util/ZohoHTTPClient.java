@@ -4,7 +4,7 @@ package com.zoho.projects.util;
 
 import com.zoho.projects.exception.ProjectsException;
 
-import org.json.JSONObject;
+import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -615,7 +615,7 @@ public class ZohoHTTPClient
 				responseLine += line;
 			}
 			
-			JSONObject resp = new JSONObject(responseLine.trim());
+			JSONObject resp = JSONObject.fromObject(responseLine.trim());
 			
 			JSONObject error = resp.getJSONObject("error");
 		
@@ -704,7 +704,7 @@ public class ZohoHTTPClient
 				responseLine += line;
 			}
 	
-			JSONObject resp = new JSONObject(responseLine.trim());
+			JSONObject resp = JSONObject.fromObject(responseLine.trim());
 			
 			JSONObject error = resp.getJSONObject("error");
 		

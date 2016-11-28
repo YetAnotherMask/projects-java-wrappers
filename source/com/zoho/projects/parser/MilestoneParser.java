@@ -5,11 +5,11 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Milestone;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -38,11 +38,11 @@ public class MilestoneParser
 		
 		List<Milestone> milestoneList = new ArrayList<Milestone>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray milestones = jsonObject.getJSONArray("milestones");	//No I18N
 		
-		for(int i = 0; i < milestones.length(); i++)
+		for(int i = 0; i < milestones.size(); i++)
 		{
 			JSONObject milestone = milestones.getJSONObject(i);
 			
@@ -65,7 +65,7 @@ public class MilestoneParser
 	public Milestone getMilestone(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray milestones = jsonObject.getJSONArray("milestones");	//No I18N
 		
@@ -168,7 +168,7 @@ public class MilestoneParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		

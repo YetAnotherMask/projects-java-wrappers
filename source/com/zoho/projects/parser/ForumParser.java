@@ -5,13 +5,13 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Category;
 import com.zoho.projects.model.Comment;
 import com.zoho.projects.model.Forum;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -38,13 +38,13 @@ public class ForumParser
 	public List<Forum> getForums(String response)throws JSONException 
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray forums = jsonObject.getJSONArray("forums");	//No I18N
 		
-		List<Forum> forumList = new ArrayList<Forum>(forums.length());
+		List<Forum> forumList = new ArrayList<Forum>(forums.size());
 		
-		for(int i = 0; i < forums.length(); i++)
+		for(int i = 0; i < forums.size(); i++)
 		{
 			JSONObject forum = forums.getJSONObject(i);
 			
@@ -69,7 +69,7 @@ public class ForumParser
 	public Forum getForum(String response)throws JSONException 
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray forums = jsonObject.getJSONArray("forums");	//No I18N
 		
@@ -159,7 +159,7 @@ public class ForumParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		
@@ -179,13 +179,13 @@ public class ForumParser
 	
 	public List<Category> getCategories(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray categories = jsonObject.getJSONArray("categories");	//No I18N
 		
-		List<Category> categoryList = new ArrayList<Category>(categories.length());
+		List<Category> categoryList = new ArrayList<Category>(categories.size());
 		
-		for(int i = 0; i < categories.length(); i++)
+		for(int i = 0; i < categories.size(); i++)
 		{
 			JSONObject category = categories.getJSONObject(i);
 			
@@ -207,7 +207,7 @@ public class ForumParser
 	
 	public Category getCategory(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray categories = jsonObject.getJSONArray("categories");	//No I18N
 		
@@ -255,13 +255,13 @@ public class ForumParser
 	
 	public List<Comment> getComments(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
 			
 		List<Comment> commentList = new ArrayList<Comment>();
 		
-		for(int i = 0; i < comments.length(); i++)
+		for(int i = 0; i < comments.size(); i++)
 		{
 			JSONObject comment = comments.getJSONObject(i);
 			
@@ -284,7 +284,7 @@ public class ForumParser
 	
 	public Comment getComment(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
 		

@@ -2,18 +2,12 @@
 
 package com.zoho.projects.api;
 
-import java.awt.geom.QuadCurve2D;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-
-import javax.xml.namespace.QName;
 
 import com.zoho.projects.model.Comment;
 import com.zoho.projects.model.Task;
-
 import com.zoho.projects.parser.TaskParser;
-
 import com.zoho.projects.util.ZohoHTTPClient;
 
 

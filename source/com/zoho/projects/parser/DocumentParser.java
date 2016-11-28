@@ -5,13 +5,13 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Document;
 import com.zoho.projects.model.Folder;
 import com.zoho.projects.model.Version;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -38,13 +38,13 @@ public class DocumentParser
 	public List<Document> getDocuments(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray documents = jsonObject.getJSONArray("documents");	//No I18N
 		
-		List<Document> documentList = new ArrayList<Document>(documents.length());
+		List<Document> documentList = new ArrayList<Document>(documents.size());
 		
-		for(int i = 0; i < documents.length(); i++)
+		for(int i = 0; i < documents.size(); i++)
 		{
 			JSONObject document = documents.getJSONObject(i);
 			
@@ -67,7 +67,7 @@ public class DocumentParser
 	public Document getDocument(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray documents = jsonObject.getJSONArray("documents");	//No I18N
 		
@@ -108,9 +108,9 @@ public class DocumentParser
 		{
 			JSONArray versions = jsonObject.getJSONArray("versions");	//No I18N
 			
-			List<Version> versionList = new ArrayList<Version>(versions.length());
+			List<Version> versionList = new ArrayList<Version>(versions.size());
  			
-			for(int i = 0; i < versions.length(); i++)
+			for(int i = 0; i < versions.size(); i++)
 			{
 				JSONObject version = versions.getJSONObject(i);
 				
@@ -249,7 +249,7 @@ public class DocumentParser
 	
 	public String getResult(String response)throws Exception
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		

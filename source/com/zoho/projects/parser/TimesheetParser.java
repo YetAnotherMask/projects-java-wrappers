@@ -6,15 +6,15 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Buglog;
 import com.zoho.projects.model.Generallog;
 import com.zoho.projects.model.Tasklog;
 import com.zoho.projects.model.Timelog;
 import com.zoho.projects.model.TimelogList;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 /**
  * Parse the JSON response into respective objects.
@@ -40,7 +40,7 @@ public class TimesheetParser
 	public TimelogList getTimeLogs(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject timelogs = jsonObject.getJSONObject("timelogs"); //No I18N
 		
@@ -61,7 +61,7 @@ public class TimesheetParser
 	
 	public Tasklog getTasklog(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject timelogs = jsonObject.getJSONObject("timelogs");	//No I18N
 		
@@ -84,7 +84,7 @@ public class TimesheetParser
 	
 	public Buglog getBuglog(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject timelogs = jsonObject.getJSONObject("timelogs");	//No I18N
 		
@@ -107,7 +107,7 @@ public class TimesheetParser
 	
 	public Generallog getGenerallog(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject timelogs = jsonObject.getJSONObject("timelogs");	//No I18N
 		
@@ -149,7 +149,7 @@ public class TimesheetParser
 			
 			Timelog timelogObj = new Timelog();
 			
-			for(int i = 0; i < date.length(); i++)
+			for(int i = 0; i < date.size(); i++)
 			{
 				JSONObject dateObj = date.getJSONObject(i);
 				
@@ -172,7 +172,7 @@ public class TimesheetParser
 					
 					List<Buglog> buglogList = new ArrayList<Buglog>();
 					
-					for(int j = 0; j < buglogs.length(); j++)
+					for(int j = 0; j < buglogs.size(); j++)
 					{
 						JSONObject buglog = buglogs.getJSONObject(j);
 						
@@ -188,7 +188,7 @@ public class TimesheetParser
 					
 					List<Tasklog> tasklogList = new ArrayList<Tasklog>();
 					
-					for(int k = 0; k < tasklogs.length(); k++)
+					for(int k = 0; k < tasklogs.size(); k++)
 					{
 						JSONObject tasklog = tasklogs.getJSONObject(k);
 						
@@ -205,7 +205,7 @@ public class TimesheetParser
 					
 					List<Generallog> generallogList = new ArrayList<Generallog>();
 					
-					for(int l = 0; l < generallogs.length(); l++)
+					for(int l = 0; l < generallogs.size(); l++)
 					{
 						JSONObject generallog = generallogs.getJSONObject(l);
 						
@@ -499,7 +499,7 @@ public class TimesheetParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		
