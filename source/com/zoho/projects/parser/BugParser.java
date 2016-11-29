@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.siliconmtn.util.Convert;
 import com.zoho.projects.model.Bug;
+import com.zoho.projects.model.BugAttachment;
 import com.zoho.projects.model.BugComment;
+import com.zoho.projects.model.BugResolution;
 import com.zoho.projects.model.Customfield;
 import com.zoho.projects.model.Defaultfield;
 
@@ -587,4 +589,171 @@ public class BugParser
 		
 	}
 
+	/**
+	 * Parse the JSON response and make it into List of Attachment object.
+	 * 
+	 * @param response JSON response contains the details of list of attachments.
+	 * 
+	 * @return Returns List of Attachment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugAttachment> getAttachments(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugAttachment> attachmentList = new ArrayList<>();
+		
+		if(jsonObject.has("attachment_details"))
+		{
+			JSONArray attachments = jsonObject.getJSONArray("attachment_details");	//No I18N
+			
+			for(int j = 0; j < attachments.size(); j++)
+			{
+				JSONObject attachment = attachments.getJSONObject(j);
+				
+				attachmentList.add(this.jsonToAttachment(attachment));
+			}
+			
+		}
+		
+		return attachmentList;
+		
+	}
+
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugAttachment jsonToAttachment(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugAttachment attachment = new BugAttachment();
+		
+		if(jsonObject.has("attached_time"))
+		{
+			attachment.setAttachedDate(Convert.formatDate(Convert.DATE_DASH_PATTERN, jsonObject.getString("attached_time")));	//No I18N
+		}
+		if(jsonObject.has("file_size"))
+		{
+			attachment.setFileSize(jsonObject.getLong("file_size"));
+		}
+		if(jsonObject.has("attached_time_format"))
+		{
+			attachment.setAttachedDateTime(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("attached_time_format")));
+		}
+		if(jsonObject.has("author_id"))
+		{
+			attachment.setAuthorId(jsonObject.getLong("author_id"));
+		}
+		if(jsonObject.has("file_uri"))
+		{
+			attachment.setFileUri(jsonObject.getString("file_uri"));	//No I18N
+		}
+		if(jsonObject.has("author_name"))
+		{
+			attachment.setAuthorName(jsonObject.getString("author_name"));
+		}
+		if(jsonObject.has("file_name"))
+		{
+			attachment.setFileName(jsonObject.getString("file_name"));
+		}
+		if(jsonObject.has("file_type"))
+		{
+			attachment.setFileType(jsonObject.getString("file_type"));
+		}
+
+		return attachment;
+		
+	}
+
+	/**
+	 * Parse the JSON response and make it into List of Attachment object.
+	 * 
+	 * @param response JSON response contains the details of list of attachments.
+	 * 
+	 * @return Returns List of Attachment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugResolution> getResolutions(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugResolution> resolutionList = new ArrayList<>();
+		
+		if(jsonObject.has("resolution_details"))
+		{
+			JSONArray resolutions = jsonObject.getJSONArray("resolution_details");	//No I18N
+			
+			for(int j = 0; j < resolutions.size(); j++)
+			{
+				JSONObject resolution = resolutions.getJSONObject(j);
+				
+				resolutionList.add(this.jsonToResolution(resolution));
+			}
+			
+		}
+		
+		return resolutionList;
+		
+	}
+
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugResolution jsonToResolution(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugResolution resolution = new BugResolution();
+		
+		if(jsonObject.has("resolved_time"))
+		{
+			resolution.setResolvedTime(Convert.formatDate(Convert.DATE_DASH_PATTERN, jsonObject.getString("resolved_time")));	//No I18N
+		}
+		if(jsonObject.has("resolved_time_format"))
+		{
+			resolution.setResolvedTimeFormat(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("resolved_time_format")));
+		}
+		if(jsonObject.has("issue_id"))
+		{
+			resolution.setIssueId(jsonObject.getLong("issue_id"));
+		}
+		if(jsonObject.has("resolved_time_long"))
+		{
+			resolution.setResolvedTimeLong(jsonObject.getLong("resolved_time_long"));
+		}
+		if(jsonObject.has("resolver"))
+		{
+			resolution.setResolver(jsonObject.getString("resolver"));
+		}
+		if(jsonObject.has("resolver_id"))
+		{
+			resolution.setResolverId(jsonObject.getLong("resolver_id"));
+		}
+		if(jsonObject.has("resolution"))
+		{
+			resolution.setResolution(jsonObject.getString("resolution"));
+		}
+
+		return resolution;
+		
+	}
 }

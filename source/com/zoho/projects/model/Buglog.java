@@ -2,64 +2,67 @@
 
 package com.zoho.projects.model;
 
+import java.io.Serializable;
+
 /**
  * This class is used to make an object for bug log.
  * 
  * @author ramesh-2099
- *
  */
 
-public class Buglog extends Log
-{
-	
+public class Buglog extends Log implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -5750489131974124877L;
 	private long bugId;
 	private String title;
-	
-	
+
+
 	/**
 	 * Set the bug id.
 	 * 
-	 * @param bugId ID of the bug.
+	 * @param bugId
+	 *            ID of the bug.
 	 */
-	
-	public void setBugId(long bugId)
-	{
+
+	public void setBugId(long bugId) {
 		this.bugId = bugId;
 	}
-	
+
+
 	/**
 	 * Get the bug id.
 	 * 
 	 * @return Returns the bug id.
 	 */
-	
-	public long getBugId()
-	{
+
+	public long getBugId() {
 		return bugId;
 	}
-	
+
+
 	/**
 	 * Set the title of the bug.
 	 * 
-	 * @param title Title of the bug.
+	 * @param title
+	 *            Title of the bug.
 	 */
-	
-	public void setTitle(String title)
-	{
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
+
 	/**
 	 * Get the title of the bug.
 	 * 
 	 * @return Returns the title of the bug.
 	 */
-	
-	public String getTitle()
-	{
+
+	public String getTitle() {
 		return title;
 	}
-	
-	
-	
+
 }

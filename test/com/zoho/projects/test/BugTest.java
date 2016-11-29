@@ -8,13 +8,17 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.zoho.projects.api.BugsAPI;
+import com.zoho.projects.model.BugAttachment;
 import com.zoho.projects.model.BugComment;
+import com.zoho.projects.model.BugResolution;
 import com.zoho.projects.model.Defaultfield;
 import com.zoho.projects.service.ZohoProjects;
 
 /****************************************************************************
- * <b>Title</b>: BugTest.java <b>Project</b>: zoho-projects-java-wrappers
- * <b>Description: </b> TODO <b>Copyright:</b> Copyright (c) 2016
+ * <b>Title</b>: BugTest.java
+ * <b>Project</b>: zoho-projects-java-wrappers
+ * <b>Description: </b> TODO
+ * <b>Copyright:</b> Copyright (c) 2016
  * <b>Company:</b> Silicon Mountain Technologies
  * 
  * @author raptor
@@ -32,15 +36,18 @@ public class BugTest {
 
 		String projectId = "967168000000017137";
 		BugsAPI bugsAPI = zohoProjects.getBugsAPI();
-		//List<Customfield> customfields = bugsAPI.getCustomFields(projectId);
 
 		Defaultfield defaultField = bugsAPI.getDefaultFields(projectId);
 		log.debug(defaultField.getPriorityDetails());
 		String bugId = "967168000000120103";
+
 		List<BugComment> comments = bugsAPI.getComments(projectId, bugId, null);
 		log.debug(comments.size());
 
-		String commentId = comments.get(1).getId();
-		bugsAPI.deleteComment(projectId, bugId, commentId);
+		List<BugAttachment> attachments = bugsAPI.getAttachments(projectId, bugId, null);
+		log.debug(attachments.size());
+
+		List<BugResolution> resolutions = bugsAPI.getResolutions(projectId, bugId, null);
+		log.debug(resolutions.size());
 	}
 }
