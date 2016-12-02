@@ -27,7 +27,7 @@ public class BugComment implements Serializable {
 	private long addedBy;
 	private String addedPerson;
 	private Date createdTime;
-	private String Comment;
+	private String comment;
 
 
 	/**
@@ -74,7 +74,7 @@ public class BugComment implements Serializable {
 	 * @return the comment
 	 */
 	public String getComment() {
-		return Comment;
+		return comment;
 	}
 
 
@@ -128,7 +128,7 @@ public class BugComment implements Serializable {
 	 *            the comment to set.
 	 */
 	public void setComment(String comment) {
-		Comment = comment;
+		this.comment = comment;
 	}
 
 }

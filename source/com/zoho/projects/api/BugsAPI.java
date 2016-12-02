@@ -162,7 +162,7 @@ public class BugsAPI extends API {
 	 */
 	public List<Customfield> getCustomFields(String projectId) throws Exception {
 		StringBuilder url = new StringBuilder(100);
-		url.append(getBaseURL()).append("/projects/").append(projectId).append("/bugs/defaultfields"); //No I18N
+		url.append(getBaseURL()).append("/projects/").append(projectId).append("/bugs/customfields/"); //No I18N
 
 		String response = ZohoHTTPClient.get(url.toString(), getQueryMap());
 
