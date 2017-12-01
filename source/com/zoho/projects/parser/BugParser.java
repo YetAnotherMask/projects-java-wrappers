@@ -7,13 +7,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.siliconmtn.util.Convert;
 import com.zoho.projects.model.Bug;
+import com.zoho.projects.model.BugAttachment;
+import com.zoho.projects.model.BugComment;
+import com.zoho.projects.model.BugResolution;
 import com.zoho.projects.model.Customfield;
 import com.zoho.projects.model.Defaultfield;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -40,13 +44,13 @@ public class BugParser
 	public List<Bug> getBugs(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray bugs = jsonObject.getJSONArray("bugs"); 	//No I18N
 		
-		List<Bug> bugList = new ArrayList<Bug>(bugs.length());
+		List<Bug> bugList = new ArrayList<Bug>(bugs.size());
 		
-		for(int i = 0; i < bugs.length(); i++)
+		for(int i = 0; i < bugs.size(); i++)
 		{
 			JSONObject bug = bugs.getJSONObject(i);
 			
@@ -70,7 +74,7 @@ public class BugParser
 	public Bug getBug(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray bugs = jsonObject.getJSONArray("bugs");	//No I18N
 		
@@ -256,6 +260,16 @@ public class BugParser
 			}
 		}
 		
+		if(jsonObject.has("customfields"))
+		{
+			JSONArray fields = jsonObject.getJSONArray("customfields");	//No I18N
+			
+			for (int i = 0; i < fields.size(); i++) {
+				JSONObject field = (JSONObject) fields.get(i);
+				bug.addCustomField(field.getString("label_name"), field.get("value"));
+			}
+		}
+		
 		return bug;
 		
 		
@@ -273,7 +287,7 @@ public class BugParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		
@@ -292,13 +306,13 @@ public class BugParser
 	
 	public List<Customfield> getCustomfields(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		List<Customfield> customfieldList = new ArrayList<Customfield>();
 		
 		JSONArray customfields = jsonObject.getJSONArray("customfields");	//No I18N
 		
-		for(int i = 0; i < customfields.length(); i++)
+		for(int i = 0; i < customfields.size(); i++)
 		{
 			customfieldList.add(this.jsonToCustomfield(customfields.getJSONObject(i)));
 		}
@@ -337,9 +351,9 @@ public class BugParser
 		{
 			JSONArray picklist = jsonObject.getJSONArray("picklist_values");	//No I18N
 			
-			String[] picklistValues = new String[picklist.length()];
+			String[] picklistValues = new String[picklist.size()];
 			
-			for (int i = 0; i < picklist.length(); i++)
+			for (int i = 0; i < picklist.size(); i++)
 			{
 				picklistValues[i] = picklist.getString(i);
 			}
@@ -366,7 +380,7 @@ public class BugParser
 		
 		Defaultfield defaultfield = new Defaultfield();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONObject defaultFields = jsonObject.getJSONObject("defaultfields"); 	//No I18N
 		
@@ -376,7 +390,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> severitydetails = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < severityDetails.length(); i++)
+			for(int i = 0; i < severityDetails.size(); i++)
 			{
 				JSONObject severitydetail = severityDetails.getJSONObject(i);
 				
@@ -392,7 +406,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> statusdeatils = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < statusDeatils.length(); i++)
+			for(int i = 0; i < statusDeatils.size(); i++)
 			{
 				JSONObject statusdeatil = statusDeatils.getJSONObject(i);
 				
@@ -408,7 +422,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> moduledetails = new ArrayList<HashMap<String,Object>>();
 			
-			for(int i = 0; i < moduleDetails.length(); i++)
+			for(int i = 0; i < moduleDetails.size(); i++)
 			{
 				JSONObject moduledetail = moduleDetails.getJSONObject(i);
 				
@@ -424,7 +438,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> prioritydetails = new ArrayList<HashMap<String,Object>>();
 			
-			for (int i = 0; i < priorityDetails.length(); i++)
+			for (int i = 0; i < priorityDetails.size(); i++)
 			{
 				JSONObject prioritydetail = priorityDetails.getJSONObject(i);
 				
@@ -441,7 +455,7 @@ public class BugParser
 			
 			List<HashMap<String, Object>> classificationdetails = new ArrayList<HashMap<String,Object>>();
 			
-			for (int i = 0; i < classificationDetails.length(); i++)
+			for (int i = 0; i < classificationDetails.size(); i++)
 			{
 				JSONObject classificationdetail = classificationDetails.getJSONObject(i);
 				
@@ -483,4 +497,273 @@ public class BugParser
 		
 	}
 	
+	/**
+	 * Parse the JSON response and make it into List of Comment object.
+	 * 
+	 * @param response JSON response contains the details of list of comments.
+	 * 
+	 * @return Returns List of Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugComment> getComments(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugComment> commentList = new ArrayList<>();
+		
+		if(jsonObject.has("comments"))
+		{
+			JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
+			
+			for(int j = 0; j < comments.size(); j++)
+			{
+				JSONObject comment = comments.getJSONObject(j);
+				
+				commentList.add(this.jsonToComment(comment));
+			}
+			
+		}
+		
+		return commentList;
+		
+	}
+	
+	/**
+	 * Parse the JSON response and make it into the Comment object.
+	 * 
+	 * @param response JSON response contains the details of comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugComment getComment(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
+		
+		JSONObject comment = comments.getJSONObject(0);
+		
+		return this.jsonToComment(comment);
+		
+	}
+	
+	
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugComment jsonToComment(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugComment comment = new BugComment();
+		
+		if(jsonObject.has("comment_id"))
+		{
+			comment.setId(jsonObject.getString("comment_id"));	//No I18N
+		}
+		if(jsonObject.has("created_time_long"))
+		{
+			comment.setCreatedTimeLong(jsonObject.getLong("created_time_long"));
+		}
+		if(jsonObject.has("created_time"))
+		{
+			comment.setCreatedTime(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("created_time")));
+		}
+		if(jsonObject.has("added_by"))
+		{
+			comment.setAddedBy(jsonObject.getLong("added_by"));
+		}
+		if(jsonObject.has("comment"))
+		{
+			comment.setComment(jsonObject.getString("comment"));	//No I18N
+		}
+		if(jsonObject.has("added_person"))
+		{
+			comment.setAddedPerson(jsonObject.getString("added_person"));
+		}
+		
+		return comment;
+		
+	}
+
+	/**
+	 * Parse the JSON response and make it into List of Attachment object.
+	 * 
+	 * @param response JSON response contains the details of list of attachments.
+	 * 
+	 * @return Returns List of Attachment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugAttachment> getAttachments(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugAttachment> attachmentList = new ArrayList<>();
+		
+		if(jsonObject.has("attachment_details"))
+		{
+			JSONArray attachments = jsonObject.getJSONArray("attachment_details");	//No I18N
+			
+			for(int j = 0; j < attachments.size(); j++)
+			{
+				JSONObject attachment = attachments.getJSONObject(j);
+				
+				attachmentList.add(this.jsonToAttachment(attachment));
+			}
+			
+		}
+		
+		return attachmentList;
+		
+	}
+
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugAttachment jsonToAttachment(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugAttachment attachment = new BugAttachment();
+		
+		if(jsonObject.has("attached_time"))
+		{
+			attachment.setAttachedDate(Convert.formatDate(Convert.DATE_DASH_PATTERN, jsonObject.getString("attached_time")));	//No I18N
+		}
+		if(jsonObject.has("file_size"))
+		{
+			attachment.setFileSize(jsonObject.getLong("file_size"));
+		}
+		if(jsonObject.has("attached_time_format"))
+		{
+			attachment.setAttachedDateTime(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("attached_time_format")));
+		}
+		if(jsonObject.has("author_id"))
+		{
+			attachment.setAuthorId(jsonObject.getLong("author_id"));
+		}
+		if(jsonObject.has("file_uri"))
+		{
+			attachment.setFileUri(jsonObject.getString("file_uri"));	//No I18N
+		}
+		if(jsonObject.has("author_name"))
+		{
+			attachment.setAuthorName(jsonObject.getString("author_name"));
+		}
+		if(jsonObject.has("file_name"))
+		{
+			attachment.setFileName(jsonObject.getString("file_name"));
+		}
+		if(jsonObject.has("file_type"))
+		{
+			attachment.setFileType(jsonObject.getString("file_type"));
+		}
+
+		return attachment;
+		
+	}
+
+	/**
+	 * Parse the JSON response and make it into List of Attachment object.
+	 * 
+	 * @param response JSON response contains the details of list of attachments.
+	 * 
+	 * @return Returns List of Attachment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public List<BugResolution> getResolutions(String response)throws JSONException
+	{
+		
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
+		
+		List<BugResolution> resolutionList = new ArrayList<>();
+		
+		if(jsonObject.has("resolution_details"))
+		{
+			JSONArray resolutions = jsonObject.getJSONArray("resolution_details");	//No I18N
+			
+			for(int j = 0; j < resolutions.size(); j++)
+			{
+				JSONObject resolution = resolutions.getJSONObject(j);
+				
+				resolutionList.add(this.jsonToResolution(resolution));
+			}
+			
+		}
+		
+		return resolutionList;
+		
+	}
+
+	/**
+	 * Parse the JSONObject into Comment object.
+	 * 
+	 * @param jsonObject JSONObject contains the details of a comment.
+	 * 
+	 * @return Returns the Comment object.
+	 * 
+	 * @throws JSONException
+	 */
+	
+	public BugResolution jsonToResolution(JSONObject jsonObject)throws JSONException
+	{
+		
+		BugResolution resolution = new BugResolution();
+		
+		if(jsonObject.has("resolved_time"))
+		{
+			resolution.setResolvedTime(Convert.formatDate(Convert.DATE_DASH_PATTERN, jsonObject.getString("resolved_time")));	//No I18N
+		}
+		if(jsonObject.has("resolved_time_format"))
+		{
+			resolution.setResolvedTimeFormat(Convert.formatDate(Convert.DATE_TIME_DASH_PATTERN_12HR, jsonObject.getString("resolved_time_format")));
+		}
+		if(jsonObject.has("issue_id"))
+		{
+			resolution.setIssueId(jsonObject.getLong("issue_id"));
+		}
+		if(jsonObject.has("resolved_time_long"))
+		{
+			resolution.setResolvedTimeLong(jsonObject.getLong("resolved_time_long"));
+		}
+		if(jsonObject.has("resolver"))
+		{
+			resolution.setResolver(jsonObject.getString("resolver"));
+		}
+		if(jsonObject.has("resolver_id"))
+		{
+			resolution.setResolverId(jsonObject.getLong("resolver_id"));
+		}
+		if(jsonObject.has("resolution"))
+		{
+			resolution.setResolution(jsonObject.getString("resolution"));
+		}
+
+		return resolution;
+		
+	}
 }

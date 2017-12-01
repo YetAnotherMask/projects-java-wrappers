@@ -5,11 +5,11 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.User;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -35,13 +35,13 @@ public class UserParser
 	
 	public List<User> getUsers(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray users = jsonObject.getJSONArray("users");	//No I18N
 		
-		List<User> userList = new ArrayList<User>(users.length());
+		List<User> userList = new ArrayList<User>(users.size());
 		
-		for(int i = 0; i < users.length(); i++)
+		for(int i = 0; i < users.size(); i++)
 		{
 			JSONObject user = users.getJSONObject(i);
 			

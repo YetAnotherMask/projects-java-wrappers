@@ -5,11 +5,11 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Folder;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 /**
  * Parse the JSON response into respective objects.
@@ -33,13 +33,13 @@ public class FolderParser
 	
 	public List<Folder> getFolders(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray folders = jsonObject.getJSONArray("folders");	//No I18N
 		
-		List<Folder> folderList = new ArrayList<Folder>(folders.length());
+		List<Folder> folderList = new ArrayList<Folder>(folders.size());
 		
-		for(int i = 0; i < folders.length(); i++)
+		for(int i = 0; i < folders.size(); i++)
 		{
 			JSONObject folder = folders.getJSONObject(i);
 			
@@ -61,7 +61,7 @@ public class FolderParser
 	
 	public Folder getFolder(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray folders = jsonObject.getJSONArray("folders");	//No I18N
 		
@@ -123,7 +123,7 @@ public class FolderParser
 	
 	public String getResult(String response)throws Exception
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		

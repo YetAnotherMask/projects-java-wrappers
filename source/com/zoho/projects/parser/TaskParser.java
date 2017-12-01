@@ -5,14 +5,14 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Comment;
 import com.zoho.projects.model.Owner;
 import com.zoho.projects.model.Task;
 import com.zoho.projects.model.Tasklist;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -41,11 +41,11 @@ public class TaskParser
 		
 		List<Task> taskList = new ArrayList<Task>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray tasks = jsonObject.getJSONArray("tasks");	//No I18N
 		
-		for(int i = 0; i < tasks.length(); i++)
+		for(int i = 0; i < tasks.size(); i++)
 		{
 			JSONObject task = tasks.getJSONObject(i);
 			
@@ -68,7 +68,7 @@ public class TaskParser
 	public Task getTask(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray tasks = jsonObject.getJSONArray("tasks");	//No I18N
 		
@@ -161,9 +161,9 @@ public class TaskParser
 			{
 				JSONArray owners = details.getJSONArray("owners");	//No I18N
 				
-				List<Owner> ownerList = new ArrayList<Owner>(owners.length());
+				List<Owner> ownerList = new ArrayList<Owner>(owners.size());
 				
-				for(int i = 0; i < owners.length(); i++)
+				for(int i = 0; i < owners.size(); i++)
 				{
 					JSONObject owner = owners.getJSONObject(i);
 					
@@ -177,9 +177,9 @@ public class TaskParser
 			{
 				JSONArray documents = details.getJSONArray("documents");	//No I18N
 				
-				String[] documentIds = new String[documents.length()];
+				String[] documentIds = new String[documents.size()];
 				
-				for(int l = 0; l < documents.length(); l++)
+				for(int l = 0; l < documents.size(); l++)
 				{
 					
 					documentIds[l] = documents.getJSONObject(l).getString("id");
@@ -193,9 +193,9 @@ public class TaskParser
 			{
 				JSONArray forums = details.getJSONArray("forums");	//No I18N
 				
-				String[] forumIds = new String[forums.length()];
+				String[] forumIds = new String[forums.size()];
 				
-				for(int m = 0; m < forums.length(); m++)
+				for(int m = 0; m < forums.size(); m++)
 				{
 					forumIds[m] = forums.getJSONObject(m).getString("id");
 				}
@@ -226,9 +226,9 @@ public class TaskParser
 		{
 			/*JSONArray subtasks = jsonObject.getJSONArray("subtasks");	//No I18N
 			
-			List<Task> tasks = new ArrayList<Task>(subtasks.length());
+			List<Task> tasks = new ArrayList<Task>(subtasks.size());
 			
-			for(int k = 0; k < subtasks.length(); k++)
+			for(int k = 0; k < subtasks.size(); k++)
 			{
 				JSONObject taskObj = subtasks.getJSONObject(k);
 				
@@ -292,7 +292,7 @@ public class TaskParser
 	public List<Comment> getComments(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		List<Comment> commentList = new ArrayList<Comment>();
 		
@@ -300,7 +300,7 @@ public class TaskParser
 		{
 			JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
 			
-			for(int j = 0; j < comments.length(); j++)
+			for(int j = 0; j < comments.size(); j++)
 			{
 				JSONObject comment = comments.getJSONObject(j);
 				
@@ -326,7 +326,7 @@ public class TaskParser
 	public Comment getComment(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray comments = jsonObject.getJSONArray("comments");	//No I18N
 		
@@ -430,7 +430,7 @@ public class TaskParser
 	public String getResult(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		

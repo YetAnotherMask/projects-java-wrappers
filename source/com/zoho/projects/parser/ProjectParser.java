@@ -5,13 +5,13 @@ package com.zoho.projects.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.zoho.projects.model.Activity;
 import com.zoho.projects.model.Project;
 import com.zoho.projects.model.Status;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -40,11 +40,11 @@ public class ProjectParser
 		
 		List<Project> projectList = new ArrayList<Project>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray projects = jsonObject.getJSONArray("projects");	//No I18N
 		
-		for(int i = 0; i < projects.length(); i++)
+		for(int i = 0; i < projects.size(); i++)
 		{
 			JSONObject project = projects.getJSONObject(i);
 			
@@ -67,7 +67,7 @@ public class ProjectParser
 	public Project getProject(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray projects = jsonObject.getJSONArray("projects");	//No I18N
 		
@@ -248,7 +248,7 @@ public class ProjectParser
 	
 	public String getResult(String response)throws JSONException
 	{
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		String result = jsonObject.getString("response");
 		
@@ -272,11 +272,11 @@ public class ProjectParser
 		
 		List<Activity> activityList = new ArrayList<Activity>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray activities = jsonObject.getJSONArray("activities");	//No I18N
 		
-		for(int i = 0; i < activities.length(); i++)
+		for(int i = 0; i < activities.size(); i++)
 		{
 			JSONObject activity = activities.getJSONObject(i);
 			
@@ -355,11 +355,11 @@ public class ProjectParser
 		
 		List<Status> statusList = new ArrayList<Status>();
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray statuses = jsonObject.getJSONArray("statuses");	//No I18N
 		
-		for(int i = 0; i < statuses.length(); i++)
+		for(int i = 0; i < statuses.size(); i++)
 		{
 			JSONObject status = statuses.getJSONObject(i);
 			
@@ -383,7 +383,7 @@ public class ProjectParser
 	public Status getStatus(String response)throws JSONException
 	{
 		
-		JSONObject jsonObject = new JSONObject(response.trim());
+		JSONObject jsonObject = JSONObject.fromObject(response.trim());
 		
 		JSONArray statuses = jsonObject.getJSONArray("statuses");	//No I18N
 		
