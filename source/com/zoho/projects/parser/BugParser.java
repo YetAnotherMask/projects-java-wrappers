@@ -260,6 +260,16 @@ public class BugParser
 			}
 		}
 		
+		if(jsonObject.has("customfields"))
+		{
+			JSONArray fields = jsonObject.getJSONArray("customfields");	//No I18N
+			
+			for (int i = 0; i < fields.size(); i++) {
+				JSONObject field = (JSONObject) fields.get(i);
+				bug.addCustomField(field.getString("label_name"), field.get("value"));
+			}
+		}
+		
 		return bug;
 		
 		

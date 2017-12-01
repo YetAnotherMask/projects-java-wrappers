@@ -4,6 +4,7 @@ package com.zoho.projects.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is used to make an object for bug.
@@ -54,7 +55,12 @@ public class Bug implements Serializable {
 	private String dueDate;
 	private String dueDateFormat;
 	private long dueDateLong;
-
+	
+	private Map<String, Object> customFields;
+	
+	public Bug () {
+		customFields = new HashMap<>();
+	}
 
 	/**
 	 * Set the bug id.
@@ -743,6 +749,18 @@ public class Bug implements Serializable {
 
 	public long getDueDateLong() {
 		return dueDateLong;
+	}
+
+	public Map<String, Object> getCustomFields() {
+		return customFields;
+	}
+
+	public void setCustomFields(Map<String, Object> customFields) {
+		this.customFields = customFields;
+	}
+	
+	public void addCustomField(String name, Object value) {
+		customFields.put(name, value);
 	}
 
 
