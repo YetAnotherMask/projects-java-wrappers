@@ -42,7 +42,7 @@ public class Bug implements Serializable {
 	private long severityId;
 	private String severityType;
 
-	private long statusId;
+	private String statusId;
 	private String statusType;
 
 	private long reproducibleId;
@@ -529,7 +529,7 @@ public class Bug implements Serializable {
 	 *            ID of the status.
 	 */
 
-	public void setStatusId(long statusId) {
+	public void setStatusId(String statusId) {
 		this.statusId = statusId;
 	}
 
@@ -540,7 +540,7 @@ public class Bug implements Serializable {
 	 * @return Returns the status id.
 	 */
 
-	public long getStatusId() {
+	public String getStatusId() {
 		return statusId;
 	}
 
