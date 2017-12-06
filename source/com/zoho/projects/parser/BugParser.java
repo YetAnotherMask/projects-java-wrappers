@@ -207,7 +207,7 @@ public class BugParser
 			
 			if(status.has("id"))
 			{
-				bug.setStatusId(status.getLong("id"));	//No I18N
+				bug.setStatusId(status.getString("id"));	//No I18N
 			}
 			if(status.has("type"))
 			{
